@@ -1,3 +1,7 @@
+// ==========================================
+// ZENVORA — SISTEMA PRINCIPAL
+// ==========================================
+
 const SUPABASE_URL = "https://hydjfbndetixmnyannrr.supabase.co";
 const SUPABASE_KEY = "sb_publishable_3GWjPvowFlbbt6lCIwJksg_lcV6EUcm";
 
@@ -6,324 +10,225 @@ const supabaseClient = window.supabase.createClient(
   SUPABASE_KEY
 );
 
+// ==========================================
+// TRADUCCIONES
+// ==========================================
+
 const translations = {
   pt: {
-    navHome:"Início",navProducts:"Produtos",navAbout:"Sobre",navContact:"Contato",
-    login:"Entrar",signup:"Criar conta",
-    eyebrow:"TECNOLOGIA QUE CONECTA NEGÓCIOS",
-    heroTitle:'Conversas inteligentes.<br><span>Mais vendas.</span>',
-    heroText:"Automatize o atendimento, simplifique processos e crie experiências melhores para seus clientes com soluções inteligentes.",
-    explore:"Conheça nossas soluções",discover:"Descubra a ZENVORA",
-    heroNote:"Uma plataforma. Soluções para diferentes negócios.",
-    visualCard1:"Atendimento inteligente",visualCard2:"Experiências conectadas",
-    productsEyebrow:"ECOSSISTEMA ZENVORA",
-    productsTitle:'Uma solução para cada<br><span>tipo de negócio.</span>',
-    productsIntro:"Conheça nossa família de produtos. Cada solução é pensada para atender às necessidades de um setor específico.",
-    fashionDesc:"Atendimento inteligente para lojas de roupas, moda e acessórios.",fashionTag:"MODA & VAREJO",
-    foodDesc:"Experiências práticas de atendimento para restaurantes e delivery.",foodTag:"RESTAURANTES",
-    gamingDesc:"Ferramentas inteligentes para organizar comunidades e grupos de jogos.",gamingTag:"GAMES & COMUNIDADES",
-    hotelsDesc:"Comunicação mais simples para hotéis, pousadas e hospedagens.",hotelsTag:"HOSPITALIDADE",
-    barberDesc:"Atendimento e organização para barbearias e salões de beleza.",barberTag:"BELEZA & BEM-ESTAR",
-    aboutEyebrow:"SOBRE A ZENVORA",
-    aboutTitle:'Tecnologia com propósito.<br><span>Conexões que evoluem.</span>',
-    aboutText:"A ZENVORA está construindo um ecossistema de soluções digitais para ajudar negócios a atender melhor, trabalhar com mais eficiência e crescer com confiança.",
-    aboutFoot:"SMART CONVERSATIONS. MORE SALES.",
-    ctaEyebrow:"O PRÓXIMO PASSO COMEÇA AQUI",
-    ctaTitle:'Vamos transformar<br><span>o seu atendimento?</span>',
-    ctaText:"Crie sua conta para começar a conhecer a plataforma ZENVORA.",
-    support:"Falar com o suporte ↗",rights:"Todos os direitos reservados.",
-    authLogin:"Entrar na ZENVORA",authSignup:"Criar sua conta",
-    authLoginDescription:"Acesse sua conta ZENVORA.",
-    authSignupDescription:"Crie sua conta para começar.",
-    email:"E-mail",password:"Senha",submitLogin:"Entrar",
-    submitSignup:"Criar conta",switchSignup:"Não tem uma conta? Criar conta",
-    switchLogin:"Já tem uma conta? Entrar",logout:"Sair da conta",
-    loading:"Aguarde...",signupSuccess:"Conta criada! Verifique seu e-mail para confirmar o cadastro.",
-    loginSuccess:"Login realizado com sucesso!",
-    logoutSuccess:"Você saiu da sua conta.",
-    loginError:"Não foi possível entrar. Confira seu e-mail e senha.",
-    signupError:"Não foi possível criar a conta.",
-    sessionText:"Você está conectado como:",
-    profileError:"Sua conta foi criada, mas não foi possível salvar o perfil."
+    navHome: "Início",
+    navProducts: "Produtos",
+    navAbout: "Sobre",
+    navContact: "Contato",
+    login: "Entrar",
+    signup: "Criar conta",
+    eyebrow: "TECNOLOGIA QUE CONECTA NEGÓCIOS",
+    heroTitle: "Conversas inteligentes.<br><span>Mais vendas.</span>",
+    heroText: "Automatize o atendimento, simplifique processos e crie experiências melhores para seus clientes com soluções inteligentes.",
+    explore: "Conheça nossas soluções ↗",
+    discover: "Descubra a ZENVORA →",
+    heroNote: "Uma plataforma. Soluções para diferentes negócios.",
+    visualCard1: "Atendimento inteligente",
+    visualCard2: "Experiências conectadas",
+    productsEyebrow: "ECOSSISTEMA ZENVORA",
+    productsTitle: "Uma solução para cada<br><span>tipo de negócio.</span>",
+    productsIntro: "Conheça nossa família de produtos. Cada solução é pensada para atender às necessidades de um setor específico.",
+    fashionDesc: "Atendimento inteligente para lojas de roupas, moda e acessórios.",
+    fashionTag: "MODA & VAREJO",
+    foodDesc: "Experiências práticas de atendimento para restaurantes e delivery.",
+    foodTag: "RESTAURANTES",
+    gamingDesc: "Ferramentas inteligentes para organizar comunidades e grupos de jogos.",
+    gamingTag: "GAMES & COMUNIDADES",
+    hotelsDesc: "Comunicação mais simples para hotéis, pousadas e hospedagens.",
+    hotelsTag: "HOSPITALIDADE",
+    barberDesc: "Atendimento e organização para barbearias e salões de beleza.",
+    barberTag: "BELEZA & BEM-ESTAR",
+    aboutEyebrow: "SOBRE A ZENVORA",
+    aboutTitle: "Tecnologia com propósito.<br><span>Conexões que evoluem.</span>",
+    aboutText: "A ZENVORA está construindo um ecossistema de soluções digitais para ajudar negócios a atender melhor, trabalhar com mais eficiência e crescer com confiança.",
+    aboutFoot: "SMART CONVERSATIONS. MORE SALES.",
+    ctaEyebrow: "O PRÓXIMO PASSO COMEÇA AQUI",
+    ctaTitle: "Vamos transformar<br><span>o seu atendimento?</span>",
+    ctaText: "Crie sua conta para começar a conhecer a plataforma ZENVORA.",
+    support: "Falar com o suporte ↗",
+    rights: "Todos os direitos reservados."
   },
 
   es: {
-    navHome:"Inicio",navProducts:"Productos",navAbout:"Nosotros",navContact:"Contacto",
-    login:"Entrar",signup:"Crear cuenta",
-    eyebrow:"TECNOLOGÍA QUE CONECTA NEGOCIOS",
-    heroTitle:'Conversaciones inteligentes.<br><span>Más ventas.</span>',
-    heroText:"Automatiza la atención, simplifica procesos y crea mejores experiencias para tus clientes con soluciones inteligentes.",
-    explore:"Conoce nuestras soluciones",discover:"Descubre ZENVORA",
-    heroNote:"Una plataforma. Soluciones para diferentes negocios.",
-    visualCard1:"Atención inteligente",visualCard2:"Experiencias conectadas",
-    productsEyebrow:"ECOSISTEMA ZENVORA",
-    productsTitle:'Una solución para cada<br><span>tipo de negocio.</span>',
-    productsIntro:"Conoce nuestra familia de productos. Cada solución está pensada para las necesidades de un sector específico.",
-    fashionDesc:"Atención inteligente para tiendas de ropa, moda y accesorios.",fashionTag:"MODA Y COMERCIO",
-    foodDesc:"Experiencias prácticas de atención para restaurantes y delivery.",foodTag:"RESTAURANTES",
-    gamingDesc:"Herramientas inteligentes para organizar comunidades y grupos de juegos.",gamingTag:"JUEGOS Y COMUNIDADES",
-    hotelsDesc:"Comunicación más sencilla para hoteles, posadas y alojamientos.",hotelsTag:"HOSPITALIDAD",
-    barberDesc:"Atención y organización para barberías y salones de belleza.",barberTag:"BELLEZA Y BIENESTAR",
-    aboutEyebrow:"SOBRE ZENVORA",
-    aboutTitle:'Tecnología con propósito.<br><span>Conexiones que evolucionan.</span>',
-    aboutText:"ZENVORA está construyendo un ecosistema de soluciones digitales para ayudar a los negocios a atender mejor, trabajar con más eficiencia y crecer con confianza.",
-    aboutFoot:"SMART CONVERSATIONS. MORE SALES.",
-    ctaEyebrow:"EL PRÓXIMO PASO EMPIEZA AQUÍ",
-    ctaTitle:'¿Transformamos<br><span>tu atención al cliente?</span>',
-    ctaText:"Crea tu cuenta para comenzar a conocer la plataforma ZENVORA.",
-    support:"Contactar soporte ↗",rights:"Todos los derechos reservados.",
-    authLogin:"Entrar en ZENVORA",authSignup:"Crear tu cuenta",
-    authLoginDescription:"Accede a tu cuenta ZENVORA.",
-    authSignupDescription:"Crea tu cuenta para comenzar.",
-    email:"Correo electrónico",password:"Contraseña",submitLogin:"Entrar",
-    submitSignup:"Crear cuenta",switchSignup:"¿No tienes cuenta? Crear cuenta",
-    switchLogin:"¿Ya tienes cuenta? Entrar",logout:"Cerrar sesión",
-    loading:"Espera...",signupSuccess:"¡Cuenta creada! Revisa tu correo para confirmar el registro.",
-    loginSuccess:"¡Inicio de sesión correcto!",
-    logoutSuccess:"Has cerrado tu sesión.",
-    loginError:"No se pudo entrar. Revisa tu correo y contraseña.",
-    signupError:"No se pudo crear la cuenta.",
-    sessionText:"Has iniciado sesión como:",
-    profileError:"Tu cuenta se creó, pero no se pudo guardar el perfil."
+    navHome: "Inicio",
+    navProducts: "Productos",
+    navAbout: "Nosotros",
+    navContact: "Contacto",
+    login: "Entrar",
+    signup: "Crear cuenta",
+    eyebrow: "TECNOLOGÍA QUE CONECTA NEGOCIOS",
+    heroTitle: "Conversaciones inteligentes.<br><span>Más ventas.</span>",
+    heroText: "Automatiza la atención, simplifica procesos y crea mejores experiencias para tus clientes con soluciones inteligentes.",
+    explore: "Conoce nuestras soluciones ↗",
+    discover: "Descubre ZENVORA →",
+    heroNote: "Una plataforma. Soluciones para diferentes negocios.",
+    visualCard1: "Atención inteligente",
+    visualCard2: "Experiencias conectadas",
+    productsEyebrow: "ECOSISTEMA ZENVORA",
+    productsTitle: "Una solución para cada<br><span>tipo de negocio.</span>",
+    productsIntro: "Conoce nuestra familia de productos. Cada solución está diseñada para las necesidades de un sector específico.",
+    fashionDesc: "Atención inteligente para tiendas de ropa, moda y accesorios.",
+    fashionTag: "MODA Y COMERCIO",
+    foodDesc: "Experiencias prácticas de atención para restaurantes y delivery.",
+    foodTag: "RESTAURANTES",
+    gamingDesc: "Herramientas inteligentes para organizar comunidades y grupos de juegos.",
+    gamingTag: "JUEGOS Y COMUNIDADES",
+    hotelsDesc: "Comunicación más sencilla para hoteles, posadas y alojamientos.",
+    hotelsTag: "HOSPITALIDAD",
+    barberDesc: "Atención y organización para barberías y salones de belleza.",
+    barberTag: "BELLEZA Y BIENESTAR",
+    aboutEyebrow: "SOBRE ZENVORA",
+    aboutTitle: "Tecnología con propósito.<br><span>Conexiones que evolucionan.</span>",
+    aboutText: "ZENVORA está construyendo un ecosistema de soluciones digitales para ayudar a los negocios a atender mejor, trabajar con más eficiencia y crecer con confianza.",
+    aboutFoot: "SMART CONVERSATIONS. MORE SALES.",
+    ctaEyebrow: "EL PRÓXIMO PASO COMIENZA AQUÍ",
+    ctaTitle: "¿Vamos a transformar<br><span>tu atención al cliente?</span>",
+    ctaText: "Crea tu cuenta para comenzar a conocer la plataforma ZENVORA.",
+    support: "Contactar soporte ↗",
+    rights: "Todos los derechos reservados."
   },
 
   en: {
-    navHome:"Home",navProducts:"Products",navAbout:"About",navContact:"Contact",
-    login:"Log in",signup:"Create account",
-    eyebrow:"TECHNOLOGY THAT CONNECTS BUSINESSES",
-    heroTitle:'Smart conversations.<br><span>More sales.</span>',
-    heroText:"Automate customer service, simplify processes and create better customer experiences with intelligent solutions.",
-    explore:"Explore our solutions",discover:"Discover ZENVORA",
-    heroNote:"One platform. Solutions for different businesses.",
-    visualCard1:"Intelligent service",visualCard2:"Connected experiences",
-    productsEyebrow:"THE ZENVORA ECOSYSTEM",
-    productsTitle:'One solution for every<br><span>kind of business.</span>',
-    productsIntro:"Meet our family of products. Each solution is designed for the needs of a specific industry.",
-    fashionDesc:"Intelligent customer service for clothing, fashion and accessory stores.",fashionTag:"FASHION & RETAIL",
-    foodDesc:"Practical customer service experiences for restaurants and delivery businesses.",foodTag:"RESTAURANTS",
-    gamingDesc:"Smart tools to organize gaming communities and groups.",gamingTag:"GAMES & COMMUNITIES",
-    hotelsDesc:"Simpler communication for hotels, inns and accommodations.",hotelsTag:"HOSPITALITY",
-    barberDesc:"Customer service and organization for barbershops and beauty salons.",barberTag:"BEAUTY & WELLNESS",
-    aboutEyebrow:"ABOUT ZENVORA",
-    aboutTitle:'Technology with purpose.<br><span>Connections that evolve.</span>',
-    aboutText:"ZENVORA is building an ecosystem of digital solutions to help businesses serve customers better, work more efficiently and grow with confidence.",
-    aboutFoot:"SMART CONVERSATIONS. MORE SALES.",
-    ctaEyebrow:"YOUR NEXT STEP STARTS HERE",
-    ctaTitle:'Let’s transform<br><span>your customer service.</span>',
-    ctaText:"Create your account to start exploring the ZENVORA platform.",
-    support:"Contact support ↗",rights:"All rights reserved.",
-    authLogin:"Log in to ZENVORA",authSignup:"Create your account",
-    authLoginDescription:"Access your ZENVORA account.",
-    authSignupDescription:"Create your account to get started.",
-    email:"Email",password:"Password",submitLogin:"Log in",
-    submitSignup:"Create account",switchSignup:"Don't have an account? Create one",
-    switchLogin:"Already have an account? Log in",logout:"Log out",
-    loading:"Please wait...",signupSuccess:"Account created! Check your email to confirm your registration.",
-    loginSuccess:"Login successful!",
-    logoutSuccess:"You have signed out.",
-    loginError:"Unable to log in. Check your email and password.",
-    signupError:"Unable to create your account.",
-    sessionText:"You are signed in as:",
-    profileError:"Your account was created, but the profile could not be saved."
+    navHome: "Home",
+    navProducts: "Products",
+    navAbout: "About",
+    navContact: "Contact",
+    login: "Login",
+    signup: "Create account",
+    eyebrow: "TECHNOLOGY THAT CONNECTS BUSINESSES",
+    heroTitle: "Smart conversations.<br><span>More sales.</span>",
+    heroText: "Automate customer service, simplify processes and create better customer experiences with intelligent solutions.",
+    explore: "Explore our solutions ↗",
+    discover: "Discover ZENVORA →",
+    heroNote: "One platform. Solutions for different businesses.",
+    visualCard1: "Smart customer service",
+    visualCard2: "Connected experiences",
+    productsEyebrow: "ZENVORA ECOSYSTEM",
+    productsTitle: "One solution for every<br><span>type of business.</span>",
+    productsIntro: "Discover our product family. Each solution is designed for the needs of a specific industry.",
+    fashionDesc: "Smart customer service for clothing, fashion and accessory stores.",
+    fashionTag: "FASHION & RETAIL",
+    foodDesc: "Practical customer service experiences for restaurants and delivery.",
+    foodTag: "RESTAURANTS",
+    gamingDesc: "Smart tools to organize gaming communities and groups.",
+    gamingTag: "GAMES & COMMUNITIES",
+    hotelsDesc: "Simpler communication for hotels, inns and accommodations.",
+    hotelsTag: "HOSPITALITY",
+    barberDesc: "Customer service and organization for barbershops and beauty salons.",
+    barberTag: "BEAUTY & WELLNESS",
+    aboutEyebrow: "ABOUT ZENVORA",
+    aboutTitle: "Technology with purpose.<br><span>Connections that evolve.</span>",
+    aboutText: "ZENVORA is building an ecosystem of digital solutions to help businesses serve customers better, work more efficiently and grow with confidence.",
+    aboutFoot: "SMART CONVERSATIONS. MORE SALES.",
+    ctaEyebrow: "THE NEXT STEP STARTS HERE",
+    ctaTitle: "Let's transform<br><span>your customer service?</span>",
+    ctaText: "Create your account to start exploring the ZENVORA platform.",
+    support: "Contact support ↗",
+    rights: "All rights reserved."
   }
 };
 
-const selector = document.getElementById("languageSelect");
-const modal = document.getElementById("authModal");
+// ==========================================
+// ELEMENTOS
+// ==========================================
+
+const guestActions = document.getElementById("guestActions");
+const accountButton = document.getElementById("accountButton");
+const publicContent = document.getElementById("publicContent");
+const customerDashboard = document.getElementById("customerDashboard");
+
+const authModal = document.getElementById("authModal");
 const authForm = document.getElementById("authForm");
-const authFormArea = document.getElementById("authFormArea");
-const authAccountArea = document.getElementById("authAccountArea");
+const authEmail = document.getElementById("authEmail");
+const authPassword = document.getElementById("authPassword");
+const authTitle = document.getElementById("authTitle");
+const authDescription = document.getElementById("authDescription");
+const authSubmit = document.getElementById("authSubmit");
+const authSwitch = document.getElementById("authSwitch");
+const authClose = document.getElementById("authClose");
 const authMessage = document.getElementById("authMessage");
 
-let currentMode = "login";
-let currentLanguage = localStorage.getItem("zenvora-language") || "pt";
+const dashboardEmail = document.getElementById("dashboardEmail");
+const dashboardBalance = document.getElementById("dashboardBalance");
+const dashboardProducts = document.getElementById("dashboardProducts");
+const dashboardHistory = document.getElementById("dashboardHistory");
 
-function t(key) {
-  return translations[currentLanguage][key] || translations.pt[key] || key;
-}
+let currentAuthMode = "login";
+let currentLanguage = localStorage.getItem("zenvora_language") || "pt";
+let currentSession = null;
 
-function setLanguage(lang) {
-  currentLanguage = translations[lang] ? lang : "pt";
-  const dict = translations[currentLanguage];
+// ==========================================
+// IDIOMA
+// ==========================================
+
+function translatePage(language) {
+  currentLanguage = translations[language] ? language : "pt";
+
+  localStorage.setItem("zenvora_language", currentLanguage);
 
   document.documentElement.lang =
     currentLanguage === "pt" ? "pt-BR" : currentLanguage;
 
-  document.querySelectorAll("[data-i18n]").forEach(el => {
-    const key = el.dataset.i18n;
-    if (dict[key] !== undefined) el.innerHTML = dict[key];
+  document.querySelectorAll("[data-i18n]").forEach(element => {
+    const key = element.dataset.i18n;
+    const translation = translations[currentLanguage][key];
+
+    if (translation) {
+      element.innerHTML = translation;
+    }
   });
 
-  localStorage.setItem("zenvora-language", currentLanguage);
-  selector.value = currentLanguage;
+  const languageSelect = document.getElementById("languageSelect");
 
-  if (modal.classList.contains("active")) {
-    updateModalText();
+  if (languageSelect) {
+    languageSelect.value = currentLanguage;
   }
 }
 
-selector.addEventListener("change", e => setLanguage(e.target.value));
-setLanguage(currentLanguage);
-
-document.getElementById("year").textContent = new Date().getFullYear();
-
-const toggle = document.getElementById("menuToggle");
-const nav = document.getElementById("mainNav");
-
-toggle.addEventListener("click", () => {
-  const open = nav.classList.toggle("open");
-  toggle.setAttribute("aria-expanded", String(open));
+document.getElementById("languageSelect")?.addEventListener("change", event => {
+  translatePage(event.target.value);
 });
 
-nav.querySelectorAll("a").forEach(a => {
-  a.addEventListener("click", () => {
-    nav.classList.remove("open");
-    toggle.setAttribute("aria-expanded", "false");
-  });
-});
+// ==========================================
+// MODAL DE LOGIN
+// ==========================================
 
-/* Estilos da janela de login */
-const authStyles = document.createElement("style");
+function openAuth(mode = "login") {
+  currentAuthMode = mode;
 
-authStyles.textContent = `
-.auth-modal {
-  display:none;
-  position:fixed;
-  inset:0;
-  z-index:9999;
-  background:rgba(0,0,0,.82);
-  backdrop-filter:blur(12px);
-  align-items:center;
-  justify-content:center;
-  padding:20px;
-}
-.auth-modal.active { display:flex; }
-.auth-box {
-  width:100%;
-  max-width:430px;
-  background:#100d19;
-  border:1px solid rgba(180,130,255,.3);
-  border-radius:22px;
-  padding:32px;
-  color:#fff;
-  position:relative;
-  box-shadow:0 20px 80px rgba(0,0,0,.5);
-  font-family:'DM Sans',sans-serif;
-}
-.auth-brand {
-  display:flex;
-  align-items:center;
-  gap:10px;
-  margin-bottom:25px;
-  font-family:'Space Grotesk',sans-serif;
-  font-weight:700;
-  letter-spacing:2px;
-}
-.auth-box h2 {
-  font-family:'Space Grotesk',sans-serif;
-  font-size:28px;
-  margin:0 0 8px;
-}
-.auth-box p {
-  color:#b8afc8;
-  line-height:1.6;
-}
-.auth-close {
-  position:absolute;
-  top:12px;
-  right:17px;
-  background:none;
-  border:0;
-  color:#fff;
-  font-size:32px;
-  cursor:pointer;
-}
-.auth-box form {
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-  margin-top:24px;
-}
-.auth-box label {
-  font-size:13px;
-  color:#d8cde9;
-}
-.auth-box input {
-  width:100%;
-  box-sizing:border-box;
-  padding:14px;
-  border-radius:10px;
-  border:1px solid #40334f;
-  background:#09070f;
-  color:#fff;
-  font-size:16px;
-  margin-bottom:10px;
-}
-.auth-submit {
-  width:100%;
-  justify-content:center;
-  margin-top:10px;
-  cursor:pointer;
-}
-.auth-switch {
-  width:100%;
-  margin-top:20px;
-  border:0;
-  background:none;
-  color:#c9a5ff;
-  cursor:pointer;
-  font-size:14px;
-}
-#authMessage {
-  margin-top:18px;
-  font-size:14px;
-  line-height:1.5;
-  color:#d8cde9;
-}
-#authUserEmail {
-  overflow-wrap:anywhere;
-}
-[hidden] { display:none !important; }
-`;
-
-document.head.appendChild(authStyles);
-
-function updateModalText() {
-  document.getElementById("authTitle").textContent =
-    currentMode === "login" ? t("authLogin") : t("authSignup");
-
-  document.getElementById("authDescription").textContent =
-    currentMode === "login" ? t("authLoginDescription") : t("authSignupDescription");
-
-  document.querySelector('label[for="authEmail"]').textContent = t("email");
-  document.querySelector('label[for="authPassword"]').textContent = t("password");
-
-  document.getElementById("authSubmit").textContent =
-    currentMode === "login" ? t("submitLogin") : t("submitSignup");
-
-  document.getElementById("authSwitch").textContent =
-    currentMode === "login" ? t("switchSignup") : t("switchLogin");
-
-  document.getElementById("authLogout").textContent = t("logout");
-}
-
-function openAuth(mode) {
-  currentMode = mode;
   authMessage.textContent = "";
-  authForm.reset();
-  authFormArea.hidden = false;
-  authAccountArea.hidden = true;
-  updateModalText();
 
-  modal.classList.add("active");
-  modal.setAttribute("aria-hidden", "false");
-  document.body.style.overflow = "hidden";
+  authTitle.textContent =
+    mode === "login" ? "Entrar na ZENVORA" : "Criar conta ZENVORA";
+
+  authDescription.textContent =
+    mode === "login"
+      ? "Acesse sua conta ZENVORA."
+      : "Crie sua conta para começar.";
+
+  authSubmit.textContent =
+    mode === "login" ? "Entrar" : "Criar conta";
+
+  authSwitch.textContent =
+    mode === "login"
+      ? "Não tem uma conta? Criar conta"
+      : "Já tem uma conta? Entrar";
+
+  authPassword.value = "";
+
+  authModal.style.display = "flex";
+  authModal.setAttribute("aria-hidden", "false");
 }
 
 function closeAuth() {
-  modal.classList.remove("active");
-  modal.setAttribute("aria-hidden", "true");
-  document.body.style.overflow = "";
+  authModal.style.display = "none";
+  authModal.setAttribute("aria-hidden", "true");
+  authMessage.textContent = "";
 }
 
 document.querySelectorAll("[data-auth-mode]").forEach(button => {
@@ -333,22 +238,23 @@ document.querySelectorAll("[data-auth-mode]").forEach(button => {
   });
 });
 
-document.getElementById("authClose").addEventListener("click", closeAuth);
+authClose.addEventListener("click", closeAuth);
 
-modal.addEventListener("click", event => {
-  if (event.target === modal) closeAuth();
+authModal.addEventListener("click", event => {
+  if (event.target === authModal) {
+    closeAuth();
+  }
 });
 
-document.addEventListener("keydown", event => {
-  if (event.key === "Escape") closeAuth();
+authSwitch.addEventListener("click", () => {
+  openAuth(currentAuthMode === "login" ? "signup" : "login");
 });
 
-document.getElementById("authSwitch").addEventListener("click", () => {
-  openAuth(currentMode === "login" ? "signup" : "login");
-});
+// ==========================================
+// PERFIL DO CLIENTE
+// ==========================================
 
-/* Guarda o perfil básico do usuário na tabela profiles */
-async function saveUserProfile(user) {
+async function saveProfile(user) {
   if (!user) return;
 
   const { error } = await supabaseClient
@@ -356,109 +262,302 @@ async function saveUserProfile(user) {
     .upsert({
       id: user.id,
       email: user.email
-    }, { onConflict: "id" });
+    });
 
   if (error) {
     console.error("Erro ao salvar perfil:", error.message);
   }
 }
 
-/* Registro e login */
+// ==========================================
+// ATUALIZAR INTERFACE DE LOGIN
+// ==========================================
+
+function updateAuthUI(session) {
+  currentSession = session;
+
+  const loggedIn = Boolean(session?.user);
+
+  guestActions.hidden = loggedIn;
+  accountButton.hidden = !loggedIn;
+
+  publicContent.hidden = loggedIn;
+  customerDashboard.hidden = !loggedIn;
+
+  const mainNav = document.getElementById("mainNav");
+
+  if (mainNav) {
+    mainNav.hidden = loggedIn;
+  }
+
+  if (loggedIn) {
+    dashboardEmail.textContent = session.user.email || "Conta ZENVORA";
+    closeAuth();
+    loadDashboard(session.user);
+  }
+}
+
+accountButton.addEventListener("click", () => {
+  customerDashboard.hidden = false;
+  publicContent.hidden = true;
+
+  customerDashboard.scrollIntoView({
+    behavior: "smooth",
+    block: "start"
+  });
+});
+
+// ==========================================
+// LOGIN E CADASTRO
+// ==========================================
+
 authForm.addEventListener("submit", async event => {
   event.preventDefault();
 
-  const email = document.getElementById("authEmail").value.trim();
-  const password = document.getElementById("authPassword").value;
-  const submit = document.getElementById("authSubmit");
+  const email = authEmail.value.trim();
+  const password = authPassword.value;
 
-  submit.disabled = true;
-  submit.textContent = t("loading");
+  authSubmit.disabled = true;
+  authSubmit.textContent = "Aguarde...";
+
   authMessage.textContent = "";
 
   try {
-    if (currentMode === "signup") {
+    if (currentAuthMode === "signup") {
       const { data, error } = await supabaseClient.auth.signUp({
-        email,
-        password,
-        options: {
-          emailRedirectTo: window.location.origin + window.location.pathname
-        }
-      });
-
-      if (error) throw error;
-
-      if (data.user && data.session) {
-        await saveUserProfile(data.user);
-      }
-
-      authMessage.textContent = t("signupSuccess");
-      authForm.reset();
-
-    } else {
-      const { data, error } = await supabaseClient.auth.signInWithPassword({
         email,
         password
       });
 
       if (error) throw error;
 
-      await saveUserProfile(data.user);
+      if (data.session) {
+        await saveProfile(data.user);
+        updateAuthUI(data.session);
+      } else {
+        authMessage.textContent =
+          "Conta criada! Verifique seu e-mail para confirmar o cadastro antes de entrar.";
+      }
 
-      authMessage.textContent = t("loginSuccess");
-      showLoggedInUser(data.user);
+    } else {
+      const { data, error } =
+        await supabaseClient.auth.signInWithPassword({
+          email,
+          password
+        });
+
+      if (error) throw error;
+
+      await saveProfile(data.user);
+
+      updateAuthUI(data.session);
     }
 
   } catch (error) {
-    console.error("Auth error:", error);
     authMessage.textContent =
-      currentMode === "login" ? t("loginError") : t("signupError");
+      error.message || "Não foi possível concluir a operação.";
   } finally {
-    submit.disabled = false;
-    submit.textContent =
-      currentMode === "login" ? t("submitLogin") : t("submitSignup");
+    authSubmit.disabled = false;
+    authSubmit.textContent =
+      currentAuthMode === "login" ? "Entrar" : "Criar conta";
   }
 });
 
-function showLoggedInUser(user) {
-  authFormArea.hidden = true;
-  authAccountArea.hidden = false;
+// ==========================================
+// CARTEIRA E PAINEL
+// ==========================================
 
-  document.getElementById("authUserEmail").textContent =
-    t("sessionText") + " " + user.email;
+function formatMoney(cents) {
+  return (Number(cents || 0) / 100).toLocaleString("pt-BR", {
+    style: "currency",
+    currency: "BRL"
+  });
 }
 
-document.getElementById("authLogout").addEventListener("click", async () => {
+async function loadDashboard(user) {
+  dashboardEmail.textContent = user.email || "Conta ZENVORA";
+
+  dashboardBalance.textContent = "Carregando...";
+  dashboardProducts.textContent = "Carregando produtos...";
+  dashboardHistory.textContent = "Carregando histórico...";
+
+  await Promise.all([
+    loadWallet(user.id),
+    loadProducts(),
+    loadHistory(user.id)
+  ]);
+}
+
+async function loadWallet(userId) {
+  const { data, error } = await supabaseClient
+    .from("wallets")
+    .select("balance_cents")
+    .eq("user_id", userId)
+    .maybeSingle();
+
+  if (error) {
+    console.error("Erro ao carregar carteira:", error.message);
+    dashboardBalance.textContent = "Indisponível";
+    return;
+  }
+
+  dashboardBalance.textContent =
+    formatMoney(data?.balance_cents || 0);
+}
+
+async function loadProducts() {
+  const { data, error } = await supabaseClient
+    .from("products")
+    .select("id, name, description")
+    .eq("active", true);
+
+  if (error) {
+    console.error("Erro ao carregar produtos:", error.message);
+    dashboardProducts.textContent =
+      "Não foi possível carregar os produtos.";
+    return;
+  }
+
+  if (!data || data.length === 0) {
+    dashboardProducts.textContent = "Nenhum produto disponível.";
+    return;
+  }
+
+  dashboardProducts.innerHTML = "";
+
+  data.forEach(product => {
+    const card = document.createElement("div");
+    card.className = "dashboard-product";
+
+    const title = document.createElement("h4");
+    title.textContent = product.name;
+
+    const description = document.createElement("p");
+    description.textContent = product.description || "";
+
+    const status = document.createElement("span");
+    status.textContent = "Disponível";
+
+    card.append(title, description, status);
+    dashboardProducts.appendChild(card);
+  });
+}
+
+async function loadHistory(userId) {
+  const { data, error } = await supabaseClient
+    .from("wallet_transactions")
+    .select("amount_cents, transaction_type, description, created_at")
+    .eq("user_id", userId)
+    .order("created_at", { ascending: false })
+    .limit(10);
+
+  if (error) {
+    console.error("Erro ao carregar histórico:", error.message);
+    dashboardHistory.textContent =
+      "Não foi possível carregar o histórico.";
+    return;
+  }
+
+  if (!data || data.length === 0) {
+    dashboardHistory.textContent =
+      "Você ainda não possui movimentações.";
+    return;
+  }
+
+  dashboardHistory.innerHTML = "";
+
+  data.forEach(transaction => {
+    const row = document.createElement("div");
+    row.className = "dashboard-history-item";
+
+    const description = document.createElement("span");
+    description.textContent =
+      transaction.description ||
+      transaction.transaction_type;
+
+    const amount = document.createElement("strong");
+    amount.textContent = formatMoney(transaction.amount_cents);
+
+    const date = document.createElement("small");
+    date.textContent = new Date(
+      transaction.created_at
+    ).toLocaleDateString("pt-BR");
+
+    row.append(description, amount, date);
+    dashboardHistory.appendChild(row);
+  });
+}
+
+// ==========================================
+// SAIR DA CONTA
+// ==========================================
+
+async function logout() {
   const { error } = await supabaseClient.auth.signOut();
 
   if (error) {
-    authMessage.textContent = error.message;
+    alert("Não foi possível sair da conta.");
     return;
   }
 
-  authFormArea.hidden = false;
-  authAccountArea.hidden = true;
-  authForm.reset();
-  authMessage.textContent = t("logoutSuccess");
+  updateAuthUI(null);
+  closeAuth();
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+}
+
+document.getElementById("dashboardLogout")
+  .addEventListener("click", logout);
+
+document.getElementById("authLogout")
+  .addEventListener("click", logout);
+
+// ==========================================
+// MENU MOBILE
+// ==========================================
+
+const menuToggle = document.getElementById("menuToggle");
+const mainNav = document.getElementById("mainNav");
+
+menuToggle?.addEventListener("click", () => {
+  const isOpen = mainNav.classList.toggle("active");
+
+  menuToggle.setAttribute("aria-expanded", String(isOpen));
 });
 
-/* Verifica se já existe uma sessão */
-async function checkSession() {
+mainNav?.querySelectorAll("a").forEach(link => {
+  link.addEventListener("click", () => {
+    mainNav.classList.remove("active");
+    menuToggle?.setAttribute("aria-expanded", "false");
+  });
+});
+
+// ==========================================
+// INICIALIZAÇÃO
+// ==========================================
+
+document.getElementById("year").textContent =
+  new Date().getFullYear();
+
+translatePage(currentLanguage);
+
+async function initializeZenvora() {
   const { data, error } = await supabaseClient.auth.getSession();
 
   if (error) {
-    console.error("Session error:", error.message);
+    console.error("Erro ao verificar sessão:", error.message);
+    updateAuthUI(null);
     return;
   }
 
-  if (data.session) {
-    await saveUserProfile(data.session.user);
-  }
+  updateAuthUI(data.session);
 }
 
-checkSession();
+initializeZenvora();
 
 supabaseClient.auth.onAuthStateChange((event, session) => {
-  if (event === "SIGNED_IN" && session) {
-    saveUserProfile(session.user);
-  }
+  updateAuthUI(session);
 });
