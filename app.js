@@ -11,10 +11,53 @@ const supabaseClient = window.supabase.createClient(
 );
 
 // ==========================================
+// ELEMENTOS
+// ==========================================
+
+const $ = id => document.getElementById(id);
+
+const guestActions = $("guestActions");
+const accountButton = $("accountButton");
+const publicContent = $("publicContent");
+const customerDashboard = $("customerDashboard");
+
+const authModal = $("authModal");
+const authForm = $("authForm");
+const authEmail = $("authEmail");
+const authPassword = $("authPassword");
+const authPasswordConfirm = $("authPasswordConfirm");
+const authUsername = $("authUsername");
+
+const usernameField = $("usernameField");
+const confirmPasswordField = $("confirmPasswordField");
+
+const authTitle = $("authTitle");
+const authDescription = $("authDescription");
+const authSubmit = $("authSubmit");
+const authSwitch = $("authSwitch");
+const authClose = $("authClose");
+const authMessage = $("authMessage");
+
+const dashboardEmail = $("dashboardEmail");
+const dashboardUsername = $("dashboardUsername");
+const dashboardBalance = $("dashboardBalance");
+const dashboardProducts = $("dashboardProducts");
+const dashboardHistory = $("dashboardHistory");
+
+const usernameForm = $("usernameForm");
+const dashboardUsernameInput = $("dashboardUsernameInput");
+const usernameMessage = $("usernameMessage");
+
+let currentAuthMode = "login";
+let currentSession = null;
+let currentLanguage = localStorage.getItem("zenvora_language") || "pt";
+
+// ==========================================
 // TRADUCCIONES
 // ==========================================
 
 const translations = {
+
   pt: {
     navHome: "Início",
     navProducts: "Produtos",
@@ -131,42 +174,15 @@ const translations = {
     support: "Contact support ↗",
     rights: "All rights reserved."
   }
+
 };
-
-// ==========================================
-// ELEMENTOS
-// ==========================================
-
-const guestActions = document.getElementById("guestActions");
-const accountButton = document.getElementById("accountButton");
-const publicContent = document.getElementById("publicContent");
-const customerDashboard = document.getElementById("customerDashboard");
-
-const authModal = document.getElementById("authModal");
-const authForm = document.getElementById("authForm");
-const authEmail = document.getElementById("authEmail");
-const authPassword = document.getElementById("authPassword");
-const authTitle = document.getElementById("authTitle");
-const authDescription = document.getElementById("authDescription");
-const authSubmit = document.getElementById("authSubmit");
-const authSwitch = document.getElementById("authSwitch");
-const authClose = document.getElementById("authClose");
-const authMessage = document.getElementById("authMessage");
-
-const dashboardEmail = document.getElementById("dashboardEmail");
-const dashboardBalance = document.getElementById("dashboardBalance");
-const dashboardProducts = document.getElementById("dashboardProducts");
-const dashboardHistory = document.getElementById("dashboardHistory");
-
-let currentAuthMode = "login";
-let currentLanguage = localStorage.getItem("zenvora_language") || "pt";
-let currentSession = null;
 
 // ==========================================
 // IDIOMA
 // ==========================================
 
 function translatePage(language) {
+
   currentLanguage = translations[language] ? language : "pt";
 
   localStorage.setItem("zenvora_language", currentLanguage);
@@ -175,41 +191,47 @@ function translatePage(language) {
     currentLanguage === "pt" ? "pt-BR" : currentLanguage;
 
   document.querySelectorAll("[data-i18n]").forEach(element => {
+
     const key = element.dataset.i18n;
     const translation = translations[currentLanguage][key];
 
     if (translation) {
       element.innerHTML = translation;
     }
+
   });
 
-  const languageSelect = document.getElementById("languageSelect");
+  const languageSelect = $("languageSelect");
 
   if (languageSelect) {
     languageSelect.value = currentLanguage;
   }
+
 }
 
-document.getElementById("languageSelect")?.addEventListener("change", event => {
+$("languageSelect")?.addEventListener("change", event => {
   translatePage(event.target.value);
 });
 
 // ==========================================
-// MODAL DE LOGIN
+// MODAL
 // ==========================================
 
 function openAuth(mode = "login") {
+
   currentAuthMode = mode;
 
   authMessage.textContent = "";
 
   authTitle.textContent =
-    mode === "login" ? "Entrar na ZENVORA" : "Criar conta ZENVORA";
+    mode === "login"
+      ? "Entrar na ZENVORA"
+      : "Criar conta ZENVORA";
 
   authDescription.textContent =
     mode === "login"
       ? "Acesse sua conta ZENVORA."
-      : "Crie sua conta para começar.";
+      : "Preencha seus dados para criar sua conta.";
 
   authSubmit.textContent =
     mode === "login" ? "Entrar" : "Criar conta";
@@ -219,61 +241,144 @@ function openAuth(mode = "login") {
       ? "Não tem uma conta? Criar conta"
       : "Já tem uma conta? Entrar";
 
+  usernameField.hidden = mode !== "signup";
+  confirmPasswordField.hidden = mode !== "signup";
+
+  authUsername.required = mode === "signup";
+  authPasswordConfirm.required = mode === "signup";
+
   authPassword.value = "";
+  authPasswordConfirm.value = "";
+  authUsername.value = "";
+
+  authPassword.autocomplete =
+    mode === "login" ? "current-password" : "new-password";
 
   authModal.style.display = "flex";
   authModal.setAttribute("aria-hidden", "false");
+
 }
 
 function closeAuth() {
+
   authModal.style.display = "none";
   authModal.setAttribute("aria-hidden", "true");
-  authMessage.textContent = "";
+
 }
 
 document.querySelectorAll("[data-auth-mode]").forEach(button => {
+
   button.addEventListener("click", event => {
+
     event.preventDefault();
+
     openAuth(button.dataset.authMode);
+
   });
+
 });
 
 authClose.addEventListener("click", closeAuth);
 
 authModal.addEventListener("click", event => {
+
   if (event.target === authModal) {
     closeAuth();
   }
+
 });
 
 authSwitch.addEventListener("click", () => {
-  openAuth(currentAuthMode === "login" ? "signup" : "login");
+
+  openAuth(
+    currentAuthMode === "login"
+      ? "signup"
+      : "login"
+  );
+
 });
 
 // ==========================================
-// PERFIL DO CLIENTE
+// VALIDAR NOME DE USUÁRIO
 // ==========================================
 
-async function saveProfile(user) {
-  if (!user) return;
+function validateUsername(username) {
 
-  const { error } = await supabaseClient
-    .from("profiles")
-    .upsert({
-      id: user.id,
-      email: user.email
-    });
+  return /^[A-Za-z0-9_.]{3,20}$/.test(username);
 
-  if (error) {
-    console.error("Erro ao salvar perfil:", error.message);
-  }
 }
 
 // ==========================================
-// ATUALIZAR INTERFACE DE LOGIN
+// SALVAR PERFIL
+// ==========================================
+
+async function saveProfile(user) {
+
+  if (!user) {
+    throw new Error("Usuário não encontrado.");
+  }
+
+  const usernameFromMetadata =
+    user.user_metadata?.username || null;
+
+  const { data: existingProfile, error: readError } =
+    await supabaseClient
+      .from("profiles")
+      .select("id, username")
+      .eq("id", user.id)
+      .maybeSingle();
+
+  if (readError) {
+    throw readError;
+  }
+
+  if (existingProfile) {
+
+    if (!existingProfile.username && usernameFromMetadata) {
+
+      const { error: updateError } =
+        await supabaseClient
+          .from("profiles")
+          .update({
+            username: usernameFromMetadata,
+            email: user.email
+          })
+          .eq("id", user.id);
+
+      if (updateError) {
+        throw updateError;
+      }
+
+      return usernameFromMetadata;
+    }
+
+    return existingProfile.username;
+
+  }
+
+  const { error: insertError } =
+    await supabaseClient
+      .from("profiles")
+      .insert({
+        id: user.id,
+        email: user.email,
+        username: usernameFromMetadata
+      });
+
+  if (insertError) {
+    throw insertError;
+  }
+
+  return usernameFromMetadata;
+
+}
+
+// ==========================================
+// MOSTRAR PAINEL
 // ==========================================
 
 function updateAuthUI(session) {
+
   currentSession = session;
 
   const loggedIn = Boolean(session?.user);
@@ -284,20 +389,27 @@ function updateAuthUI(session) {
   publicContent.hidden = loggedIn;
   customerDashboard.hidden = !loggedIn;
 
-  const mainNav = document.getElementById("mainNav");
+  const mainNav = $("mainNav");
 
   if (mainNav) {
     mainNav.hidden = loggedIn;
   }
 
   if (loggedIn) {
-    dashboardEmail.textContent = session.user.email || "Conta ZENVORA";
+
+    dashboardEmail.textContent =
+      session.user.email || "Conta ZENVORA";
+
     closeAuth();
+
     loadDashboard(session.user);
+
   }
+
 }
 
 accountButton.addEventListener("click", () => {
+
   customerDashboard.hidden = false;
   publicContent.hidden = true;
 
@@ -305,16 +417,18 @@ accountButton.addEventListener("click", () => {
     behavior: "smooth",
     block: "start"
   });
+
 });
 
 // ==========================================
-// LOGIN E CADASTRO
+// CADASTRO E LOGIN
 // ==========================================
 
 authForm.addEventListener("submit", async event => {
+
   event.preventDefault();
 
-  const email = authEmail.value.trim();
+  const email = authEmail.value.trim().toLowerCase();
   const password = authPassword.value;
 
   authSubmit.disabled = true;
@@ -323,169 +437,454 @@ authForm.addEventListener("submit", async event => {
   authMessage.textContent = "";
 
   try {
+
+    // CADASTRO
+
     if (currentAuthMode === "signup") {
-      const { data, error } = await supabaseClient.auth.signUp({
-        email,
-        password
-      });
 
-      if (error) throw error;
+      const username = authUsername.value.trim();
 
-      if (data.session) {
-        await saveProfile(data.user);
-        updateAuthUI(data.session);
-      } else {
-        authMessage.textContent =
-          "Conta criada! Verifique seu e-mail para confirmar o cadastro antes de entrar.";
+      const confirmPassword = authPasswordConfirm.value;
+
+      if (!validateUsername(username)) {
+
+        throw new Error(
+          "O nome de usuário deve ter de 3 a 20 caracteres. Use apenas letras, números, ponto ou underline."
+        );
+
       }
 
-    } else {
+      if (password !== confirmPassword) {
+
+        throw new Error("As senhas não coincidem.");
+
+      }
+
+      if (password.length < 6) {
+
+        throw new Error("A senha precisa ter pelo menos 6 caracteres.");
+
+      }
+
       const { data, error } =
-        await supabaseClient.auth.signInWithPassword({
+        await supabaseClient.auth.signUp({
+
           email,
-          password
+          password,
+
+          options: {
+
+            data: {
+              username: username
+            }
+
+          }
+
         });
 
-      if (error) throw error;
+      if (error) {
+        throw error;
+      }
 
-      await saveProfile(data.user);
+      if (data.session && data.user) {
 
-      updateAuthUI(data.session);
+        await saveProfile(data.user);
+
+        updateAuthUI(data.session);
+
+        return;
+
+      }
+
+      authMessage.textContent =
+        "Conta criada! Confirme seu e-mail e depois entre na ZENVORA com seu e-mail e senha.";
+
+      return;
+
     }
 
+    // LOGIN
+
+    const { data, error } =
+      await supabaseClient.auth.signInWithPassword({
+
+        email,
+        password
+
+      });
+
+    if (error) {
+      throw error;
+    }
+
+    if (!data.user || !data.session) {
+
+      throw new Error("Não foi possível acessar sua conta.");
+
+    }
+
+    await saveProfile(data.user);
+
+    updateAuthUI(data.session);
+
   } catch (error) {
-    authMessage.textContent =
-      error.message || "Não foi possível concluir a operação.";
+
+    console.error("Erro de autenticação:", error);
+
+    if (error.code === "23505") {
+
+      authMessage.textContent =
+        "Esse nome de usuário já está sendo utilizado. Escolha outro.";
+
+    } else {
+
+      authMessage.textContent =
+        error.message || "Não foi possível concluir a operação.";
+
+    }
+
   } finally {
+
     authSubmit.disabled = false;
+
     authSubmit.textContent =
-      currentAuthMode === "login" ? "Entrar" : "Criar conta";
+      currentAuthMode === "login"
+        ? "Entrar"
+        : "Criar conta";
+
   }
+
 });
 
 // ==========================================
-// CARTEIRA E PAINEL
+// NOME DE USUÁRIO NO PAINEL
+// ==========================================
+
+async function loadUsername(user) {
+
+  const { data, error } =
+    await supabaseClient
+      .from("profiles")
+      .select("username")
+      .eq("id", user.id)
+      .maybeSingle();
+
+  if (error) {
+
+    console.error("Erro ao carregar nome:", error.message);
+
+    dashboardUsername.textContent = "Indisponível";
+
+    return;
+
+  }
+
+  const username = data?.username || null;
+
+  if (username) {
+
+    dashboardUsername.textContent = username;
+
+    usernameForm.hidden = true;
+
+  } else {
+
+    dashboardUsername.textContent = "Não definido";
+
+    usernameForm.hidden = false;
+
+  }
+
+}
+
+// ==========================================
+// SALVAR NOME DE USUÁRIO NO PAINEL
+// ==========================================
+
+usernameForm.addEventListener("submit", async event => {
+
+  event.preventDefault();
+
+  if (!currentSession?.user) {
+    return;
+  }
+
+  const username = dashboardUsernameInput.value.trim();
+
+  usernameMessage.textContent = "";
+
+  if (!validateUsername(username)) {
+
+    usernameMessage.textContent =
+      "Use de 3 a 20 caracteres: letras, números, ponto ou underline.";
+
+    return;
+
+  }
+
+  const button = usernameForm.querySelector("button");
+
+  button.disabled = true;
+  button.textContent = "Salvando...";
+
+  try {
+
+    const { error } =
+      await supabaseClient
+        .from("profiles")
+        .update({
+          username: username
+        })
+        .eq("id", currentSession.user.id);
+
+    if (error) {
+      throw error;
+    }
+
+    await supabaseClient.auth.updateUser({
+
+      data: {
+        username: username
+      }
+
+    });
+
+    dashboardUsername.textContent = username;
+
+    usernameForm.hidden = true;
+
+    dashboardUsernameInput.value = "";
+
+  } catch (error) {
+
+    console.error(error);
+
+    if (error.code === "23505") {
+
+      usernameMessage.textContent =
+        "Esse nome já está em uso. Escolha outro.";
+
+    } else {
+
+      usernameMessage.textContent =
+        error.message || "Não foi possível salvar o nome.";
+
+    }
+
+  } finally {
+
+    button.disabled = false;
+    button.textContent = "Salvar nome de usuário";
+
+  }
+
+});
+
+// ==========================================
+// SALDO
 // ==========================================
 
 function formatMoney(cents) {
+
   return (Number(cents || 0) / 100).toLocaleString("pt-BR", {
+
     style: "currency",
     currency: "BRL"
+
   });
-}
 
-async function loadDashboard(user) {
-  dashboardEmail.textContent = user.email || "Conta ZENVORA";
-
-  dashboardBalance.textContent = "Carregando...";
-  dashboardProducts.textContent = "Carregando produtos...";
-  dashboardHistory.textContent = "Carregando histórico...";
-
-  await Promise.all([
-    loadWallet(user.id),
-    loadProducts(),
-    loadHistory(user.id)
-  ]);
 }
 
 async function loadWallet(userId) {
-  const { data, error } = await supabaseClient
-    .from("wallets")
-    .select("balance_cents")
-    .eq("user_id", userId)
-    .maybeSingle();
+
+  const { data, error } =
+    await supabaseClient
+      .from("wallets")
+      .select("balance_cents")
+      .eq("user_id", userId)
+      .maybeSingle();
 
   if (error) {
+
     console.error("Erro ao carregar carteira:", error.message);
+
     dashboardBalance.textContent = "Indisponível";
+
     return;
+
   }
 
   dashboardBalance.textContent =
     formatMoney(data?.balance_cents || 0);
+
 }
 
+// ==========================================
+// PRODUTOS
+// ==========================================
+
 async function loadProducts() {
-  const { data, error } = await supabaseClient
-    .from("products")
-    .select("id, name, description")
-    .eq("active", true);
+
+  const { data, error } =
+    await supabaseClient
+      .from("products")
+      .select("id, name, description")
+      .eq("active", true);
 
   if (error) {
+
     console.error("Erro ao carregar produtos:", error.message);
+
     dashboardProducts.textContent =
       "Não foi possível carregar os produtos.";
+
     return;
+
   }
 
   if (!data || data.length === 0) {
-    dashboardProducts.textContent = "Nenhum produto disponível.";
+
+    dashboardProducts.textContent =
+      "Nenhum produto disponível.";
+
     return;
+
   }
 
   dashboardProducts.innerHTML = "";
 
   data.forEach(product => {
+
     const card = document.createElement("div");
+
     card.className = "dashboard-product";
 
     const title = document.createElement("h4");
+
     title.textContent = product.name;
 
     const description = document.createElement("p");
+
     description.textContent = product.description || "";
 
     const status = document.createElement("span");
+
     status.textContent = "Disponível";
 
     card.append(title, description, status);
+
     dashboardProducts.appendChild(card);
+
   });
+
 }
 
+// ==========================================
+// HISTÓRICO
+// ==========================================
+
 async function loadHistory(userId) {
-  const { data, error } = await supabaseClient
-    .from("wallet_transactions")
-    .select("amount_cents, transaction_type, description, created_at")
-    .eq("user_id", userId)
-    .order("created_at", { ascending: false })
-    .limit(10);
+
+  const { data, error } =
+    await supabaseClient
+      .from("wallet_transactions")
+      .select("amount_cents, transaction_type, description, created_at")
+      .eq("user_id", userId)
+      .order("created_at", { ascending: false })
+      .limit(10);
 
   if (error) {
+
     console.error("Erro ao carregar histórico:", error.message);
+
     dashboardHistory.textContent =
       "Não foi possível carregar o histórico.";
+
     return;
+
   }
 
   if (!data || data.length === 0) {
+
     dashboardHistory.textContent =
       "Você ainda não possui movimentações.";
+
     return;
+
   }
 
   dashboardHistory.innerHTML = "";
 
   data.forEach(transaction => {
+
     const row = document.createElement("div");
+
     row.className = "dashboard-history-item";
 
     const description = document.createElement("span");
+
     description.textContent =
-      transaction.description ||
-      transaction.transaction_type;
+      transaction.description || transaction.transaction_type;
 
     const amount = document.createElement("strong");
-    amount.textContent = formatMoney(transaction.amount_cents);
+
+    amount.textContent =
+      formatMoney(transaction.amount_cents);
 
     const date = document.createElement("small");
-    date.textContent = new Date(
-      transaction.created_at
-    ).toLocaleDateString("pt-BR");
+
+    date.textContent =
+      new Date(transaction.created_at).toLocaleDateString("pt-BR");
 
     row.append(description, amount, date);
+
     dashboardHistory.appendChild(row);
+
   });
+
+}
+
+// ==========================================
+// CARREGAR PAINEL COMPLETO
+// ==========================================
+
+async function loadDashboard(user) {
+
+  customerDashboard.hidden = false;
+
+  dashboardEmail.textContent =
+    user.email || "Conta ZENVORA";
+
+  dashboardBalance.textContent = "Carregando...";
+
+  dashboardProducts.textContent = "Carregando produtos...";
+
+  dashboardHistory.textContent = "Carregando histórico...";
+
+  try {
+
+    await saveProfile(user);
+
+    await Promise.all([
+
+      loadUsername(user),
+
+      loadWallet(user.id),
+
+      loadProducts(),
+
+      loadHistory(user.id)
+
+    ]);
+
+  } catch (error) {
+
+    console.error("Erro ao carregar painel:", error);
+
+    dashboardUsername.textContent = "Erro ao carregar";
+
+  }
+
 }
 
 // ==========================================
@@ -493,71 +892,102 @@ async function loadHistory(userId) {
 // ==========================================
 
 async function logout() {
+
   const { error } = await supabaseClient.auth.signOut();
 
   if (error) {
+
     alert("Não foi possível sair da conta.");
+
     return;
+
   }
 
+  currentSession = null;
+
   updateAuthUI(null);
+
   closeAuth();
 
   window.scrollTo({
+
     top: 0,
     behavior: "smooth"
+
   });
+
 }
 
-document.getElementById("dashboardLogout")
-  .addEventListener("click", logout);
+$("dashboardLogout").addEventListener("click", logout);
 
-document.getElementById("authLogout")
-  .addEventListener("click", logout);
+$("authLogout").addEventListener("click", logout);
 
 // ==========================================
 // MENU MOBILE
 // ==========================================
 
-const menuToggle = document.getElementById("menuToggle");
-const mainNav = document.getElementById("mainNav");
+const menuToggle = $("menuToggle");
+
+const mainNav = $("mainNav");
 
 menuToggle?.addEventListener("click", () => {
+
   const isOpen = mainNav.classList.toggle("active");
 
-  menuToggle.setAttribute("aria-expanded", String(isOpen));
+  menuToggle.setAttribute(
+    "aria-expanded",
+    String(isOpen)
+  );
+
 });
 
 mainNav?.querySelectorAll("a").forEach(link => {
+
   link.addEventListener("click", () => {
+
     mainNav.classList.remove("active");
+
     menuToggle?.setAttribute("aria-expanded", "false");
+
   });
+
 });
 
 // ==========================================
 // INICIALIZAÇÃO
 // ==========================================
 
-document.getElementById("year").textContent =
-  new Date().getFullYear();
+$("year").textContent = new Date().getFullYear();
 
 translatePage(currentLanguage);
 
 async function initializeZenvora() {
-  const { data, error } = await supabaseClient.auth.getSession();
+
+  const { data, error } =
+    await supabaseClient.auth.getSession();
 
   if (error) {
+
     console.error("Erro ao verificar sessão:", error.message);
+
     updateAuthUI(null);
+
     return;
+
   }
 
   updateAuthUI(data.session);
+
 }
 
 initializeZenvora();
 
 supabaseClient.auth.onAuthStateChange((event, session) => {
-  updateAuthUI(session);
+
+  setTimeout(() => {
+
+    updateAuthUI(session);
+
+  }, 0);
+
 });
