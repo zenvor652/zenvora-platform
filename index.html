@@ -57,6 +57,8 @@
     </div>
   </header>
 
+  <!-- SITE PÚBLICO -->
+
   <main id="publicContent">
 
     <section class="hero section-wrap" id="home">
@@ -243,88 +245,312 @@
 
   <!-- PAINEL DO CLIENTE -->
 
-  <section id="customerDashboard" class="section-wrap" hidden>
+  <main id="customerDashboard" class="customer-dashboard" hidden>
 
-    <div class="section-heading">
+    <div class="dashboard-shell">
 
-      <div>
-        <div class="eyebrow">ÁREA DO CLIENTE</div>
-        <h2>Bem-vindo à <span>ZENVORA.</span></h2>
-      </div>
+      <!-- CABEÇALHO DO PAINEL -->
 
-      <button id="dashboardLogout" class="button button-ghost" type="button">
-        Sair da conta
-      </button>
+      <header class="dashboard-header">
 
-    </div>
+        <div class="dashboard-welcome">
+          <span class="dashboard-kicker">
+            <span class="pulse"></span>
+            ÁREA EXCLUSIVA
+          </span>
 
-    <div class="dashboard-card">
+          <h1>Bem-vindo à <span>ZENVORA.</span></h1>
+          <p>Seu espaço de controle e soluções inteligentes.</p>
+        </div>
 
-      <h3>Minha conta</h3>
-
-      <p>
-        Nome de usuário:
-        <strong id="dashboardUsername">—</strong>
-      </p>
-
-      <p id="dashboardEmail"></p>
-
-      <form id="usernameForm" hidden>
-
-        <label for="dashboardUsernameInput">Escolha seu nome de usuário</label>
-
-        <input
-          id="dashboardUsernameInput"
-          type="text"
-          minlength="3"
-          maxlength="20"
-          pattern="[A-Za-z0-9_.]+"
-          autocomplete="username"
-          placeholder="Exemplo: zenvora_user"
-          required
-        >
-
-        <button class="button button-primary" type="submit">
-          Salvar nome de usuário
+        <button id="dashboardLogout" class="button button-ghost dashboard-logout" type="button">
+          ↗ Sair
         </button>
 
-        <p id="usernameMessage" role="status"></p>
+      </header>
 
-      </form>
+      <!-- NAVEGAÇÃO DAS TELAS -->
+
+      <nav class="dashboard-nav" aria-label="Navegação da conta">
+
+        <button class="dashboard-nav-item active" type="button" data-dashboard-view="home">
+          <span class="dashboard-nav-icon">⌂</span>
+          <span>Início</span>
+        </button>
+
+        <button class="dashboard-nav-item" type="button" data-dashboard-view="products">
+          <span class="dashboard-nav-icon">◇</span>
+          <span>Produtos</span>
+        </button>
+
+        <button class="dashboard-nav-item" type="button" data-dashboard-view="wallet">
+          <span class="dashboard-nav-icon">◈</span>
+          <span>Carteira</span>
+        </button>
+
+        <button class="dashboard-nav-item" type="button" data-dashboard-view="profile">
+          <span class="dashboard-nav-icon">◎</span>
+          <span>Perfil</span>
+        </button>
+
+      </nav>
+
+      <!-- TELA INICIAL -->
+
+      <section class="dashboard-view active" id="dashboardViewHome" data-view="home">
+
+        <div class="dashboard-section-heading">
+          <div>
+            <span class="dashboard-kicker">VISÃO GERAL</span>
+            <h2>Seu painel</h2>
+          </div>
+          <span class="dashboard-status">
+            <span class="pulse"></span>
+            Conta ativa
+          </span>
+        </div>
+
+        <div class="dashboard-overview-grid">
+
+          <article class="dashboard-card balance-card">
+
+            <div class="dashboard-card-top">
+              <span class="dashboard-card-label">SALDO DISPONÍVEL</span>
+              <span class="dashboard-card-symbol">◈</span>
+            </div>
+
+            <strong id="dashboardBalance">R$ 0,00</strong>
+
+            <p>Carteira digital ZENVORA</p>
+
+            <button class="dashboard-action" type="button" data-dashboard-view="wallet">
+              Ver carteira <span>↗</span>
+            </button>
+
+          </article>
+
+          <article class="dashboard-card account-summary">
+
+            <div class="dashboard-card-top">
+              <span class="dashboard-card-label">MINHA CONTA</span>
+              <span class="dashboard-card-symbol">◎</span>
+            </div>
+
+            <strong id="dashboardUsername">—</strong>
+
+            <p id="dashboardEmail">Sua conta ZENVORA</p>
+
+            <button class="dashboard-action" type="button" data-dashboard-view="profile">
+              Ver perfil <span>↗</span>
+            </button>
+
+          </article>
+
+        </div>
+
+        <div class="dashboard-section-heading compact-heading">
+          <div>
+            <span class="dashboard-kicker">SEU ECOSSISTEMA</span>
+            <h2>Seus produtos</h2>
+          </div>
+
+          <button class="dashboard-text-button" type="button" data-dashboard-view="products">
+            Ver todos ↗
+          </button>
+        </div>
+
+        <div id="dashboardHomeProducts" class="dashboard-home-products">
+          <div class="dashboard-loading">Carregando produtos...</div>
+        </div>
+
+        <div class="dashboard-section-heading compact-heading">
+          <div>
+            <span class="dashboard-kicker">ATIVIDADE</span>
+            <h2>Movimentações recentes</h2>
+          </div>
+
+          <button class="dashboard-text-button" type="button" data-dashboard-view="wallet">
+            Ver carteira ↗
+          </button>
+        </div>
+
+        <div class="dashboard-card dashboard-history-card">
+          <div id="dashboardHomeHistory">
+            <div class="dashboard-loading">Carregando histórico...</div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- TELA DE PRODUTOS -->
+
+      <section class="dashboard-view" id="dashboardViewProducts" data-view="products" hidden>
+
+        <div class="dashboard-section-heading">
+          <div>
+            <span class="dashboard-kicker">ECOSSISTEMA ZENVORA</span>
+            <h2>Meus produtos</h2>
+            <p class="dashboard-description">Escolha as soluções que deseja conhecer e contratar.</p>
+          </div>
+        </div>
+
+        <div id="dashboardProducts" class="dashboard-products-grid">
+          <div class="dashboard-loading">Carregando produtos...</div>
+        </div>
+
+      </section>
+
+      <!-- TELA DA CARTEIRA -->
+
+      <section class="dashboard-view" id="dashboardViewWallet" data-view="wallet" hidden>
+
+        <div class="dashboard-section-heading">
+          <div>
+            <span class="dashboard-kicker">ZENVORA WALLET</span>
+            <h2>Minha carteira</h2>
+            <p class="dashboard-description">Gerencie seu saldo e acompanhe suas movimentações.</p>
+          </div>
+        </div>
+
+        <article class="dashboard-card wallet-main-card">
+
+          <div class="dashboard-card-top">
+            <span class="dashboard-card-label">SALDO DISPONÍVEL</span>
+            <span class="dashboard-card-symbol">◈</span>
+          </div>
+
+          <strong id="dashboardWalletBalance">R$ 0,00</strong>
+
+          <p>Seu saldo para contratar soluções ZENVORA.</p>
+
+          <button id="rechargeButton" class="button button-primary recharge-button" type="button" disabled>
+            + Adicionar saldo — em breve
+          </button>
+
+          <small>Recarga mínima: R$ 50,00</small>
+
+        </article>
+
+        <div class="dashboard-section-heading compact-heading">
+          <div>
+            <span class="dashboard-kicker">HISTÓRICO</span>
+            <h2>Movimentações</h2>
+          </div>
+        </div>
+
+        <div class="dashboard-card dashboard-history-card">
+          <div id="dashboardHistory">
+            <div class="dashboard-loading">Carregando histórico...</div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- TELA DE PERFIL -->
+
+      <section class="dashboard-view" id="dashboardViewProfile" data-view="profile" hidden>
+
+        <div class="dashboard-section-heading">
+          <div>
+            <span class="dashboard-kicker">CONFIGURAÇÕES DA CONTA</span>
+            <h2>Meu perfil</h2>
+            <p class="dashboard-description">Gerencie suas informações pessoais.</p>
+          </div>
+        </div>
+
+        <div class="dashboard-card profile-card">
+
+          <div class="profile-avatar">
+            Z
+          </div>
+
+          <div class="profile-main-info">
+            <span class="dashboard-card-label">USUÁRIO ZENVORA</span>
+            <strong id="dashboardProfileUsername">—</strong>
+            <span class="profile-email" id="dashboardProfileEmail"></span>
+          </div>
+
+          <div class="profile-divider"></div>
+
+          <form id="usernameForm" class="profile-form" hidden>
+
+            <label for="dashboardUsernameInput">Nome de usuário</label>
+
+            <input
+              id="dashboardUsernameInput"
+              type="text"
+              minlength="3"
+              maxlength="20"
+              pattern="[A-Za-z0-9_.]+"
+              autocomplete="username"
+              placeholder="Exemplo: zenvora_user"
+              required
+            >
+
+            <small>Use de 3 a 20 letras, números, ponto ou underline.</small>
+
+            <button class="button button-primary" type="submit">
+              Salvar alterações
+            </button>
+
+            <p id="usernameMessage" role="status"></p>
+
+          </form>
+
+          <div class="profile-info-row">
+            <span>Plataforma</span>
+            <strong>ZENVORA</strong>
+          </div>
+
+          <div class="profile-info-row">
+            <span>Status</span>
+            <strong class="profile-active">● Ativa</strong>
+          </div>
+
+        </div>
+
+        <button id="profileLogout" class="button button-ghost profile-logout" type="button">
+          Sair da conta ↗
+        </button>
+
+      </section>
+
+      <footer class="dashboard-footer">
+        <span class="brand-mark small">Z</span>
+        <span>ZENVO​RA — SMART CONVERSATIONS. MORE SALES.</span>
+      </footer>
 
     </div>
 
-    <div class="dashboard-card">
+    <!-- MENU INFERIOR PARA CELULAR -->
 
-      <h3>Meu saldo</h3>
+    <nav class="dashboard-mobile-nav" aria-label="Menu inferior">
 
-      <p id="dashboardBalance">R$ 0,00</p>
-
-      <p>Saldo disponível na sua carteira ZENVORA.</p>
-
-      <button class="button button-primary" type="button" disabled>
-        Adicionar saldo — em breve
+      <button class="dashboard-nav-item active" type="button" data-dashboard-view="home">
+        <span class="dashboard-nav-icon">⌂</span>
+        <span>Início</span>
       </button>
 
-    </div>
+      <button class="dashboard-nav-item" type="button" data-dashboard-view="products">
+        <span class="dashboard-nav-icon">◇</span>
+        <span>Produtos</span>
+      </button>
 
-    <div class="dashboard-card">
+      <button class="dashboard-nav-item" type="button" data-dashboard-view="wallet">
+        <span class="dashboard-nav-icon">◈</span>
+        <span>Carteira</span>
+      </button>
 
-      <h3>Meus produtos</h3>
+      <button class="dashboard-nav-item" type="button" data-dashboard-view="profile">
+        <span class="dashboard-nav-icon">◎</span>
+        <span>Perfil</span>
+      </button>
 
-      <div id="dashboardProducts">Carregando produtos...</div>
+    </nav>
 
-    </div>
+  </main>
 
-    <div class="dashboard-card">
-
-      <h3>Meu histórico</h3>
-
-      <div id="dashboardHistory">Carregando histórico...</div>
-
-    </div>
-
-  </section>
+  <!-- RODAPÉ PÚBLICO -->
 
   <footer class="footer" id="contact">
 
