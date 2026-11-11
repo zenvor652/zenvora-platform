@@ -44,16 +44,25 @@ const dashboardBalance = $("dashboardBalance");
 const dashboardProducts = $("dashboardProducts");
 const dashboardHistory = $("dashboardHistory");
 
+const dashboardWalletBalance = $("dashboardWalletBalance");
+const dashboardProfileUsername = $("dashboardProfileUsername");
+const dashboardProfileEmail = $("dashboardProfileEmail");
+
+const dashboardHomeProducts = $("dashboardHomeProducts");
+const dashboardHomeHistory = $("dashboardHomeHistory");
+
 const usernameForm = $("usernameForm");
 const dashboardUsernameInput = $("dashboardUsernameInput");
 const usernameMessage = $("usernameMessage");
+
+const mainNav = $("mainNav");
 
 let currentAuthMode = "login";
 let currentSession = null;
 let currentLanguage = localStorage.getItem("zenvora_language") || "pt";
 
 // ==========================================
-// TRADUCCIONES
+// TRADUÇÕES
 // ==========================================
 
 const translations = {
@@ -219,40 +228,56 @@ $("languageSelect")?.addEventListener("change", event => {
 
 function openAuth(mode = "login") {
 
+  if (!authModal) return;
+
   currentAuthMode = mode;
 
-  authMessage.textContent = "";
+  if (authMessage) authMessage.textContent = "";
 
-  authTitle.textContent =
-    mode === "login"
-      ? "Entrar na ZENVORA"
-      : "Criar conta ZENVORA";
+  if (authTitle) {
+    authTitle.textContent =
+      mode === "login"
+        ? "Entrar na ZENVORA"
+        : "Criar conta ZENVORA";
+  }
 
-  authDescription.textContent =
-    mode === "login"
-      ? "Acesse sua conta ZENVORA."
-      : "Preencha seus dados para criar sua conta.";
+  if (authDescription) {
+    authDescription.textContent =
+      mode === "login"
+        ? "Acesse sua conta ZENVORA."
+        : "Preencha seus dados para criar sua conta.";
+  }
 
-  authSubmit.textContent =
-    mode === "login" ? "Entrar" : "Criar conta";
+  if (authSubmit) {
+    authSubmit.textContent =
+      mode === "login" ? "Entrar" : "Criar conta";
+  }
 
-  authSwitch.textContent =
-    mode === "login"
-      ? "Não tem uma conta? Criar conta"
-      : "Já tem uma conta? Entrar";
+  if (authSwitch) {
+    authSwitch.textContent =
+      mode === "login"
+        ? "Não tem uma conta? Criar conta"
+        : "Já tem uma conta? Entrar";
+  }
 
-  usernameField.hidden = mode !== "signup";
-  confirmPasswordField.hidden = mode !== "signup";
+  if (usernameField) usernameField.hidden = mode !== "signup";
+  if (confirmPasswordField) confirmPasswordField.hidden = mode !== "signup";
 
-  authUsername.required = mode === "signup";
-  authPasswordConfirm.required = mode === "signup";
+  if (authUsername) {
+    authUsername.required = mode === "signup";
+    authUsername.value = "";
+  }
 
-  authPassword.value = "";
-  authPasswordConfirm.value = "";
-  authUsername.value = "";
+  if (authPasswordConfirm) {
+    authPasswordConfirm.required = mode === "signup";
+    authPasswordConfirm.value = "";
+  }
 
-  authPassword.autocomplete =
-    mode === "login" ? "current-password" : "new-password";
+  if (authPassword) {
+    authPassword.value = "";
+    authPassword.autocomplete =
+      mode === "login" ? "current-password" : "new-password";
+  }
 
   authModal.style.display = "flex";
   authModal.setAttribute("aria-hidden", "false");
@@ -260,6 +285,8 @@ function openAuth(mode = "login") {
 }
 
 function closeAuth() {
+
+  if (!authModal) return;
 
   authModal.style.display = "none";
   authModal.setAttribute("aria-hidden", "true");
@@ -278,9 +305,9 @@ document.querySelectorAll("[data-auth-mode]").forEach(button => {
 
 });
 
-authClose.addEventListener("click", closeAuth);
+authClose?.addEventListener("click", closeAuth);
 
-authModal.addEventListener("click", event => {
+authModal?.addEventListener("click", event => {
 
   if (event.target === authModal) {
     closeAuth();
@@ -288,7 +315,7 @@ authModal.addEventListener("click", event => {
 
 });
 
-authSwitch.addEventListener("click", () => {
+authSwitch?.addEventListener("click", () => {
 
   openAuth(
     currentAuthMode === "login"
@@ -374,8 +401,67 @@ async function saveProfile(user) {
 }
 
 // ==========================================
+// NAVEGAÇÃO DO PAINEL
+// ==========================================
+
+function switchDashboardView(viewName) {
+
+  const allowedViews = ["home", "products", "wallet", "profile"];
+
+  if (!allowedViews.includes(viewName)) {
+    viewName = "home";
+  }
+
+  document.querySelectorAll("[data-view]").forEach(view => {
+
+    const isActive = view.dataset.view === viewName;
+
+    view.classList.toggle("active", isActive);
+    view.hidden = false;
+
+  });
+
+  document.querySelectorAll("[data-dashboard-view]").forEach(button => {
+
+    const isActive = button.dataset.dashboardView === viewName;
+
+    button.classList.toggle("active", isActive);
+    button.setAttribute("aria-current", isActive ? "page" : "false");
+
+  });
+
+  if (customerDashboard) {
+    customerDashboard.scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
+  }
+
+}
+
+document.querySelectorAll("[data-dashboard-view]").forEach(button => {
+
+  button.addEventListener("click", event => {
+
+    event.preventDefault();
+
+    switchDashboardView(button.dataset.dashboardView);
+
+  });
+
+});
+
+// ==========================================
 // MOSTRAR PAINEL
 // ==========================================
+
+function setText(element, value) {
+
+  if (element) {
+    element.textContent = value;
+  }
+
+}
 
 function updateAuthUI(session) {
 
@@ -383,13 +469,11 @@ function updateAuthUI(session) {
 
   const loggedIn = Boolean(session?.user);
 
-  guestActions.hidden = loggedIn;
-  accountButton.hidden = !loggedIn;
+  if (guestActions) guestActions.hidden = loggedIn;
+  if (accountButton) accountButton.hidden = !loggedIn;
 
-  publicContent.hidden = loggedIn;
-  customerDashboard.hidden = !loggedIn;
-
-  const mainNav = $("mainNav");
+  if (publicContent) publicContent.hidden = loggedIn;
+  if (customerDashboard) customerDashboard.hidden = !loggedIn;
 
   if (mainNav) {
     mainNav.hidden = loggedIn;
@@ -397,26 +481,33 @@ function updateAuthUI(session) {
 
   if (loggedIn) {
 
-    dashboardEmail.textContent =
-      session.user.email || "Conta ZENVORA";
+    const email = session.user.email || "Conta ZENVORA";
+
+    setText(dashboardEmail, email);
+    setText(dashboardProfileEmail, email);
+
+    switchDashboardView("home");
 
     closeAuth();
 
     loadDashboard(session.user);
 
+  } else {
+
+    switchDashboardView("home");
+
   }
 
 }
 
-accountButton.addEventListener("click", () => {
+accountButton?.addEventListener("click", () => {
+
+  if (!currentSession?.user) return;
 
   customerDashboard.hidden = false;
   publicContent.hidden = true;
 
-  customerDashboard.scrollIntoView({
-    behavior: "smooth",
-    block: "start"
-  });
+  switchDashboardView("home");
 
 });
 
@@ -424,7 +515,7 @@ accountButton.addEventListener("click", () => {
 // CADASTRO E LOGIN
 // ==========================================
 
-authForm.addEventListener("submit", async event => {
+authForm?.addEventListener("submit", async event => {
 
   event.preventDefault();
 
@@ -438,12 +529,9 @@ authForm.addEventListener("submit", async event => {
 
   try {
 
-    // CADASTRO
-
     if (currentAuthMode === "signup") {
 
       const username = authUsername.value.trim();
-
       const confirmPassword = authPasswordConfirm.value;
 
       if (!validateUsername(username)) {
@@ -455,15 +543,11 @@ authForm.addEventListener("submit", async event => {
       }
 
       if (password !== confirmPassword) {
-
         throw new Error("As senhas não coincidem.");
-
       }
 
       if (password.length < 6) {
-
         throw new Error("A senha precisa ter pelo menos 6 caracteres.");
-
       }
 
       const { data, error } =
@@ -473,11 +557,9 @@ authForm.addEventListener("submit", async event => {
           password,
 
           options: {
-
             data: {
               username: username
             }
-
           }
 
         });
@@ -503,8 +585,6 @@ authForm.addEventListener("submit", async event => {
 
     }
 
-    // LOGIN
-
     const { data, error } =
       await supabaseClient.auth.signInWithPassword({
 
@@ -518,9 +598,7 @@ authForm.addEventListener("submit", async event => {
     }
 
     if (!data.user || !data.session) {
-
       throw new Error("Não foi possível acessar sua conta.");
-
     }
 
     await saveProfile(data.user);
@@ -560,6 +638,15 @@ authForm.addEventListener("submit", async event => {
 // NOME DE USUÁRIO NO PAINEL
 // ==========================================
 
+function updateUsernameDisplays(username) {
+
+  const displayName = username || "Não definido";
+
+  setText(dashboardUsername, displayName);
+  setText(dashboardProfileUsername, displayName);
+
+}
+
 async function loadUsername(user) {
 
   const { data, error } =
@@ -573,7 +660,7 @@ async function loadUsername(user) {
 
     console.error("Erro ao carregar nome:", error.message);
 
-    dashboardUsername.textContent = "Indisponível";
+    updateUsernameDisplays("Indisponível");
 
     return;
 
@@ -581,18 +668,10 @@ async function loadUsername(user) {
 
   const username = data?.username || null;
 
-  if (username) {
+  updateUsernameDisplays(username);
 
-    dashboardUsername.textContent = username;
-
-    usernameForm.hidden = true;
-
-  } else {
-
-    dashboardUsername.textContent = "Não definido";
-
-    usernameForm.hidden = false;
-
+  if (usernameForm) {
+    usernameForm.hidden = Boolean(username);
   }
 
 }
@@ -601,7 +680,7 @@ async function loadUsername(user) {
 // SALVAR NOME DE USUÁRIO NO PAINEL
 // ==========================================
 
-usernameForm.addEventListener("submit", async event => {
+usernameForm?.addEventListener("submit", async event => {
 
   event.preventDefault();
 
@@ -649,7 +728,7 @@ usernameForm.addEventListener("submit", async event => {
 
     });
 
-    dashboardUsername.textContent = username;
+    updateUsernameDisplays(username);
 
     usernameForm.hidden = true;
 
@@ -695,6 +774,13 @@ function formatMoney(cents) {
 
 }
 
+function updateBalanceDisplays(value) {
+
+  setText(dashboardBalance, value);
+  setText(dashboardWalletBalance, value);
+
+}
+
 async function loadWallet(userId) {
 
   const { data, error } =
@@ -708,20 +794,64 @@ async function loadWallet(userId) {
 
     console.error("Erro ao carregar carteira:", error.message);
 
-    dashboardBalance.textContent = "Indisponível";
+    updateBalanceDisplays("Indisponível");
 
     return;
 
   }
 
-  dashboardBalance.textContent =
-    formatMoney(data?.balance_cents || 0);
+  updateBalanceDisplays(
+    formatMoney(data?.balance_cents || 0)
+  );
 
 }
 
 // ==========================================
 // PRODUTOS
 // ==========================================
+
+function createProductCard(product) {
+
+  const card = document.createElement("div");
+
+  card.className = "dashboard-product";
+
+  const title = document.createElement("h4");
+  title.textContent = product.name;
+
+  const description = document.createElement("p");
+  description.textContent = product.description || "";
+
+  const status = document.createElement("span");
+  status.textContent = "Disponível";
+
+  card.append(title, description, status);
+
+  return card;
+
+}
+
+function renderProducts(container, products) {
+
+  if (!container) return;
+
+  container.innerHTML = "";
+
+  if (!products || products.length === 0) {
+
+    container.textContent = "Nenhum produto disponível.";
+
+    return;
+
+  }
+
+  products.forEach(product => {
+
+    container.appendChild(createProductCard(product));
+
+  });
+
+}
 
 async function loadProducts() {
 
@@ -735,53 +865,84 @@ async function loadProducts() {
 
     console.error("Erro ao carregar produtos:", error.message);
 
-    dashboardProducts.textContent =
-      "Não foi possível carregar os produtos.";
+    if (dashboardProducts) {
+      dashboardProducts.textContent =
+        "Não foi possível carregar os produtos.";
+    }
+
+    if (dashboardHomeProducts) {
+      dashboardHomeProducts.textContent =
+        "Não foi possível carregar os produtos.";
+    }
 
     return;
 
   }
 
-  if (!data || data.length === 0) {
+  const products = data || [];
 
-    dashboardProducts.textContent =
-      "Nenhum produto disponível.";
+  renderProducts(dashboardProducts, products);
 
-    return;
-
-  }
-
-  dashboardProducts.innerHTML = "";
-
-  data.forEach(product => {
-
-    const card = document.createElement("div");
-
-    card.className = "dashboard-product";
-
-    const title = document.createElement("h4");
-
-    title.textContent = product.name;
-
-    const description = document.createElement("p");
-
-    description.textContent = product.description || "";
-
-    const status = document.createElement("span");
-
-    status.textContent = "Disponível";
-
-    card.append(title, description, status);
-
-    dashboardProducts.appendChild(card);
-
-  });
+  renderProducts(
+    dashboardHomeProducts,
+    products.slice(0, 3)
+  );
 
 }
 
 // ==========================================
 // HISTÓRICO
 // ==========================================
+
+function createHistoryRow(transaction) {
+
+  const row = document.createElement("div");
+
+  row.className = "dashboard-history-item";
+
+  const description = document.createElement("span");
+
+  description.textContent =
+    transaction.description || transaction.transaction_type;
+
+  const amount = document.createElement("strong");
+
+  amount.textContent =
+    formatMoney(transaction.amount_cents);
+
+  const date = document.createElement("small");
+
+  date.textContent =
+    new Date(transaction.created_at).toLocaleDateString("pt-BR");
+
+  row.append(description, amount, date);
+
+  return row;
+
+}
+
+function renderHistory(container, transactions) {
+
+  if (!container) return;
+
+  container.innerHTML = "";
+
+  if (!transactions || transactions.length === 0) {
+
+    container.textContent =
+      "Você ainda não possui movimentações.";
+
+    return;
+
+  }
+
+  transactions.forEach(transaction => {
+
+    container.appendChild(createHistoryRow(transaction));
+
+  });
+
+}
 
 async function loadHistory(userId) {
 
@@ -797,50 +958,28 @@ async function loadHistory(userId) {
 
     console.error("Erro ao carregar histórico:", error.message);
 
-    dashboardHistory.textContent =
-      "Não foi possível carregar o histórico.";
+    if (dashboardHistory) {
+      dashboardHistory.textContent =
+        "Não foi possível carregar o histórico.";
+    }
+
+    if (dashboardHomeHistory) {
+      dashboardHomeHistory.textContent =
+        "Não foi possível carregar o histórico.";
+    }
 
     return;
 
   }
 
-  if (!data || data.length === 0) {
+  const transactions = data || [];
 
-    dashboardHistory.textContent =
-      "Você ainda não possui movimentações.";
+  renderHistory(dashboardHistory, transactions);
 
-    return;
-
-  }
-
-  dashboardHistory.innerHTML = "";
-
-  data.forEach(transaction => {
-
-    const row = document.createElement("div");
-
-    row.className = "dashboard-history-item";
-
-    const description = document.createElement("span");
-
-    description.textContent =
-      transaction.description || transaction.transaction_type;
-
-    const amount = document.createElement("strong");
-
-    amount.textContent =
-      formatMoney(transaction.amount_cents);
-
-    const date = document.createElement("small");
-
-    date.textContent =
-      new Date(transaction.created_at).toLocaleDateString("pt-BR");
-
-    row.append(description, amount, date);
-
-    dashboardHistory.appendChild(row);
-
-  });
+  renderHistory(
+    dashboardHomeHistory,
+    transactions.slice(0, 3)
+  );
 
 }
 
@@ -850,16 +989,34 @@ async function loadHistory(userId) {
 
 async function loadDashboard(user) {
 
-  customerDashboard.hidden = false;
+  if (!user) return;
 
-  dashboardEmail.textContent =
-    user.email || "Conta ZENVORA";
+  if (customerDashboard) {
+    customerDashboard.hidden = false;
+  }
 
-  dashboardBalance.textContent = "Carregando...";
+  const email = user.email || "Conta ZENVORA";
 
-  dashboardProducts.textContent = "Carregando produtos...";
+  setText(dashboardEmail, email);
+  setText(dashboardProfileEmail, email);
 
-  dashboardHistory.textContent = "Carregando histórico...";
+  updateBalanceDisplays("Carregando...");
+
+  if (dashboardProducts) {
+    dashboardProducts.textContent = "Carregando produtos...";
+  }
+
+  if (dashboardHomeProducts) {
+    dashboardHomeProducts.textContent = "Carregando produtos...";
+  }
+
+  if (dashboardHistory) {
+    dashboardHistory.textContent = "Carregando histórico...";
+  }
+
+  if (dashboardHomeHistory) {
+    dashboardHomeHistory.textContent = "Carregando histórico...";
+  }
 
   try {
 
@@ -881,7 +1038,7 @@ async function loadDashboard(user) {
 
     console.error("Erro ao carregar painel:", error);
 
-    dashboardUsername.textContent = "Erro ao carregar";
+    updateUsernameDisplays("Erro ao carregar");
 
   }
 
@@ -918,25 +1075,23 @@ async function logout() {
 
 }
 
-$("dashboardLogout").addEventListener("click", logout);
-
-$("authLogout").addEventListener("click", logout);
+$("dashboardLogout")?.addEventListener("click", logout);
+$("profileLogout")?.addEventListener("click", logout);
+$("authLogout")?.addEventListener("click", logout);
 
 // ==========================================
-// MENU MOBILE
+// MENU MOBILE DO SITE PÚBLICO
 // ==========================================
 
 const menuToggle = $("menuToggle");
 
-const mainNav = $("mainNav");
-
 menuToggle?.addEventListener("click", () => {
 
-  const isOpen = mainNav.classList.toggle("active");
+  const isOpen = mainNav?.classList.toggle("active");
 
   menuToggle.setAttribute(
     "aria-expanded",
-    String(isOpen)
+    String(Boolean(isOpen))
   );
 
 });
@@ -957,7 +1112,11 @@ mainNav?.querySelectorAll("a").forEach(link => {
 // INICIALIZAÇÃO
 // ==========================================
 
-$("year").textContent = new Date().getFullYear();
+const yearElement = $("year");
+
+if (yearElement) {
+  yearElement.textContent = new Date().getFullYear();
+}
 
 translatePage(currentLanguage);
 
